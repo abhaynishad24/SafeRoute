@@ -13,7 +13,8 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/login/", {
+      // YAHAN BADLAV KIYA HAI: Hardcoded URL ki jagah Environment Variable use kiya
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
