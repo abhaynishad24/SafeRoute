@@ -21,9 +21,13 @@ export default function SignupPage() {
       return;
     }
 
+    // 🌟 2. Dynamic Backend URL configuration
+    // Local laptop par automatic localhost uthayega, aur Vercel par environment variable ka use karega
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
+
     try {
-      // 2. Django backend ke signup URL par POST request
-      const response = await fetch("http://127.0.0.1:8000/api/signup/", {
+      // 🌟 Hardcoded IP hata kar backticks (`) ke saath dynamic link set kiya hai
+      const response = await fetch(`${BACKEND_URL}/api/signup/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,14 +50,14 @@ export default function SignupPage() {
       }, 2000);
 
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || "Failed to connect to the server.");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-content items-center p-4">
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center p-4">
       <h1 className="text-3xl font-bold mb-4">Signup</h1>
-      <form onSubmit={handleSignup} className="bg-white p-6 rounded shadow-md">
+      <form onSubmit={handleSignup} className="bg-white p-6 rounded shadow-md w-full max-w-md">
         <div className="mb-4">
           <label htmlFor="username" className="block text-gray-700 font-bold mb-2">
             Username
@@ -61,6 +65,7 @@ export default function SignupPage() {
           <input
             type="text"
             id="username"
+            required
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -74,6 +79,7 @@ export default function SignupPage() {
           <input
             type="password"
             id="password"
+            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -87,12 +93,14 @@ export default function SignupPage() {
           <input
             type="password"
             id="confirmPassword"
+            required
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Confirm your password"
           />
         </div>
+        
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
             {error}
@@ -103,16 +111,17 @@ export default function SignupPage() {
             {success}
           </div>
         )}
+        
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200"
         >
           Signup
         </button>
       </form>
       <p className="mt-4">
         Already have an account?{" "}
-        <Link href="/login" className="text-blue-500 hover:text-blue-800">
+        <Link href="/login" className="text-blue-500 hover:text-blue-800 font-semibold">
           Login here
         </Link>
       </p>
