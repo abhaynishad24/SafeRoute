@@ -72,7 +72,8 @@ export default function Home() {
 
   const fetchIncidents = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/incidents/");
+      // 1st CHANGE: Localhost ki jagah environment variable lagaya
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incidents/`);
       if (response.ok) {
         const data = await response.json();
         const mappedData = data.map((inc: Incident) => {
@@ -98,7 +99,8 @@ export default function Home() {
     }
 
     try {
-      const response = await fetch("http://localhost:8000/api/incidents/", {
+      // 2nd CHANGE: Localhost ki jagah environment variable lagaya
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incidents/`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
